@@ -14,6 +14,7 @@
 
     "dependencies": {
         "jah": "~0.2.0",
-        "cocos2d": "~0.2.0-beta3"
+        "cocos2d": "~0.2.0-beta3",
+        "directory-tree-watcher": ""
     }
 }
