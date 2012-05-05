@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <title>Acceleration Example</title>
+   <script type="text/javascript" charset="utf-8" src="cordova-1.7.0.js"></script>
+   <script type="text/javascript" src="http://10.17.12.210:3000/socket.io/socket.io.js"></script>
+   <script type="text/javascript" charset="utf-8" src="jquery-1.7.1.min.js"></script>
+   <script type="text/javascript" charset="utf-8">
+   
+   //Connections
+   var socket = io.connect('ws://10.17.12.210:3000');
+
+   // The watch id references the current `watchAcceleration`
+   var watchID = null;
+
+   // Whether the gun has fired or not.
+   var fired = false;
+
+   // Wait for PhoneGap to load
+   //
+   
+   var isPaused = true;
+   document.addEventListener("deviceready", onDeviceReady, false);
+   document.addEventListener("pause", function() { navigator.accelerometer.clearWatch(watchID); }, false);
+   document.addEventListener("resume", onDeviceReady, false);
+
+   function pauseGame(){
+     
+   }
+
+   // PhoneGap is ready
+   //
+   function onDeviceReady() {
+      startWatch();
+   }
+
+   // Start watching the acceleration
+   //
+   function startWatch() {
+
+       // Update acceleration every 3 seconds
+       var options = { frequency: 100 };
+       
+       
+       watchID = navigator.accelerometer.watchAcceleration(onSuccess, 
+           onError, options);
+   }
+
+   // Stop watching the acceleration
+   //
+   function stopWatch() {
+       if (watchID) {
+           navigator.accelerometer.clearWatch(watchID);
+           watchID = null;
+       }
+   }
+
+   // onSuccess: Get a snapshot of the current acceleration
+   //
+   function onSuccess(acceleration) {
+       var element = document.getElementById('accelerometer');
+       var payload = {
+         x: Math.round(acceleration.x * 100) / 100,
+         y: Math.round(acceleration.y * 100) / 100,
+         // z: acceleration.z,
+         f: fired,
+         // t: acceleration.timestamp
+       };
+       element.innerHTML = JSON.stringify(payload);
+       socket.emit('controllerEvent', {coordinates:payload,game:"cantdomuch" });
+       //socket.emit('controllerEvent', {coordinates:payload,game:"cantdomuch1" });       
+       fired = false;
+       //jQuery("#fire").css("background","url(images/pig-button.png)");
+   }
+
+   // onError: Failed to get the acceleration
+   //
+   function onError() {
+       alert('onError!');
+   }
+         
+   function sendInfo(dataString){
+     jQuery("#locationURL").attr("src","http://10.17.12.210:3000?"+dataString);
+   }
+   
+   /*
+     This method is for testing purposes. 
+     Fires when the server emits a 'data' event
+   */
+   /*
+   socket.on('data', function (data) {
+    alert(data);
+    socket.emit('my other event', { my: 'data' });
+  });*/
+
+   jQuery(document).ready(function(){
+     jQuery("#fire").click(function(){
+     
+       fired =  true;
+       jQuery("#fire").attr("src","images/pig-button-active.png");
+       
+       setTimeout(function(){
+          jQuery("#fire").attr("src","images/pig-button.png");
+       },500);
+       
+     });
+     
+   })
+  
+   </script>
+   <style>
+     #fire{
+       width:208px;
+       height:208px;
+       border:none;
+       outline:none;
+     }
+     
+   </style>
+ </head>
+ <body>
+   <div id="accelerometer" style="display:none;">Waiting for accelerometer...</div>
+   <div style="width:100%;text-align:center;padding-top:100px;">
+     <image id="fire" src="images/pig-button.png" />
+   </div>
+ </body>
+</html>
