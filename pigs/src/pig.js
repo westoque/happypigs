@@ -5,8 +5,8 @@ function Pig() {
     Pig.superclass.constructor.call(this)
 
     var sprite = new cocos.nodes.Sprite({
-                     file: '/resources/sprites.png',
-                     rect: new geom.Rect(0, 0, 64, 16)
+                     file: '/resources/pig.png',
+                     rect: new geom.Rect(0, 0, 111, 121)
                  })
 
     sprite.anchorPoint = new geom.Point(0, 0)

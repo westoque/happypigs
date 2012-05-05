@@ -7,6 +7,7 @@ var express = require('express')
   , routes = require('./routes')
 
 var app = module.exports = express.createServer();
+var io = require('socket.io').listen(app);
 
 // Configuration
 
@@ -20,16 +21,38 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
 app.configure('production', function(){
-  app.use(express.errorHandler()); 
+  app.use(express.errorHandler());
 });
 
 // Routes
 
 app.get('/', routes.index);
+
+io.sockets.on('connection', function (socket) {
+  socket.emit('ready', { success: true });
+  socket.on('register', function (data) {
+    if (data && data.game) {
+      var key = 'game:' + data.game;
+      socket.join(key);
+    }
+  });
+  socket.on('controllerEvent', function(data) {
+    if (data && data.game) {
+      var key = 'game:' + data.game;
+      io.sockets.in(key).send(data.coordinates);
+    }
+  });
+  socket.on('unregister', function (data) {
+    if (data && data.game) {
+      var key = 'game:' + data.game;
+      socket.leave(key);
+    }
+  });
+});
 
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

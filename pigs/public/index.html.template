@@ -3,6 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>Pigs</title>
+        <script src="http://localhost:3000/socket.io/socket.io.js"></script>
         <style type="text/css" media="screen">
             body {
                 font-family: Helvetica, Arial, sans-serif;
@@ -27,6 +28,12 @@
         </style>
     </head>
     <body>
+      <script type="text/javascript" charset="utf-8">
+        var socket = io.connect('http://localhost:3000');
+        socket.on('controllerEvent', function (coordinates) {
+          console.log(coordinates);
+        });
+      </script>
         <h1>Pigs</h1>
         <div class="cocos2d-app">
             Loading Pigs...

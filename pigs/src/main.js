@@ -36,7 +36,7 @@ function HappyLayer () {
 
     // Add Pig
     var pig = new Pig()
-    pig.position = new geom.Point(160, s.height - 280)
+    pig.position = new geo.Point(160, s.height - 280)
     this.addChild(pig)
     this.pig = pig
 }
