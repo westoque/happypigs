@@ -20,29 +20,65 @@ var Layer    = nodes.Layer
  * @extends cocos.nodes.Layer
  */
 function HappyLayer () {
-    // You must always call the super class constructor
-    HappyLayer.superclass.constructor.call(this)
+  // You must always call the super class constructor
+  HappyLayer.superclass.constructor.call(this);
 
-    // Get size of canvas
-    var s = Director.sharedDirector.winSize
+  var winSize = cocos.Director.sharedDirector.winSize
+  var maxHeight = winSize.height;
+  var maxWidth  = winSize.width;
 
-    // Add a label
-    var label = new Label({ string:   'HappyLayer'
-                          , fontName: 'Arial'
-                          , fontSize: 26
-                          })
-    label.position = ccp(s.width / 2, s.height / 2)
-    this.addChild(label)
+  // Get size of canvas
+  var s = Director.sharedDirector.winSize;
 
-    // Add Pig
-    var pig = new Pig()
-    pig.position = new geo.Point(160, s.height - 280)
-    this.addChild(pig)
-    this.pig = pig
+  // Add Pig
+  var self = this;
+  var pig = new Pig();
+  pig.position = new geo.Point(160, s.height - 280);
+  this.addChild(pig);
+  this.pig = pig;
+
+  // Add Pig 1
+  //var self = this;
+  //var pig = new Pig();
+  //pig.position = new geo.Point(10, 280);
+  //this.addChild(pig);
+  //this.pig = pig;
+
+  // Add Pig 2
+  //var self = this;
+  //var pig = new Pig();
+  //pig.position = new geo.Point(50, 280);
+  //this.addChild(pig);
+  //this.pig = pig;
+
+  var origin;
+  var cherryPopped = false;
+
+
+  window.top.pig = pig;
+  window.top.something = function(data) {
+    if (!cherryPopped) {
+      origin = data.coordinates;
+      cherryPopped = true;
+    }
+
+    var coor = data.coordinates;
+    var pos = self.pig.position;
+
+    var newX = (coor.x - origin.x) * 2;
+    var newY = (coor.y - origin.y) * 2;
+
+    if (maxWidth > newX < 0) {
+      pos.x += newX;
+    }
+    if (maxHeight > newY < 0) {
+      pos.y += newY;
+    }
+  };
 }
 
 // Inherit from cocos.nodes.Layer
-HappyLayer.inherit(Layer)
+HappyLayer.inherit(Layer);
 
 
 /**
@@ -52,24 +88,23 @@ function main () {
     // Initialise application
 
     // Get director singleton
-    var director = Director.sharedDirector
+    var director = Director.sharedDirector;
 
     // Wait for the director to finish preloading our assets
     events.addListener(director, 'ready', function (director) {
-        // Create a scene and layer
-        var scene = new Scene()
-          , layer = new HappyLayer()
+      // Create a scene and layer
+      var scene = new Scene(), layer = new HappyLayer();
 
-        // Add our layer to the scene
-        scene.addChild(layer)
+      // Add our layer to the scene
+      scene.addChild(layer);
 
-        // Run the scene
-        director.replaceScene(scene)
-    })
+      // Run the scene
+      director.replaceScene(scene);
+    });
 
     // Preload our assets
-    director.runPreloadScene()
+    director.runPreloadScene();
 }
 
 
-exports.main = main
+exports.main = main;

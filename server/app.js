@@ -33,7 +33,7 @@ app.configure('production', function(){
 app.get('/', routes.index);
 
 app.get('/something', function(req, res) {
-  res.render('something', { title: 'Express' })
+  res.render('something', { title: 'Express' });
 });
 
 io.sockets.on('connection', function (socket) {
@@ -47,11 +47,11 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('controllerEvent', function(data) {
+    console.log('++++++++++++++++++++');
     console.log(data);
     if (data && data.game) {
       var key = 'game:' + data.game;
-      socket.broadcast.emit('data', 'data', {});
-      //io.sockets.emit(key).send(data.coordinates);
+      socket.broadcast.emit(key, data);
     }
   });
 

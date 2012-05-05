@@ -29,16 +29,18 @@
     </head>
     <body>
       <script type="text/javascript" charset="utf-8">
+        window.SOMETHING = 1;
         var socket = io.connect('http://localhost:3000');
-        socket.on('data', function (coordinates) {
-          console.log('connnnnn');
-          console.log(coordinates);
+        socket.on('game:cantdomuch', function (coordinates) {
+          if (window.something) {
+            window.something(coordinates);
+          }
         });
       </script>
-        <h1>Pigs</h1>
-        <div class="cocos2d-app">
-            Loading Pigs...
-            ${scripts}
-        </div>
+      <h1>Pigs</h1>
+      <div class="cocos2d-app">
+          Loading Pigs...
+          ${scripts}
+      </div>
     </body>
 </html>

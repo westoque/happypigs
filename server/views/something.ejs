@@ -6,11 +6,8 @@
   var x = 10;
   setInterval(function() {
     socket.emit('controllerEvent', {
-      coordinates: {
-        x: x,
-        y: 100
-      },
-      game: 'test'
+      coordinates: { x: 4.56, y: 1.34, f: false },
+      game: 'whatToDo'
     });
   }, 500);
 </script>
