@@ -65,7 +65,7 @@ function HappyLayer () {
     var coor = data.coordinates;
     var pos  = self.pig.position;
 
-    var newX = (coor.x - origin.x) * 2;
+    var newX = (coor.x - origin.x) * -2;
     var newY = (coor.y - origin.y) * 2;
 
     console.log(newY);
