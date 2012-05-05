@@ -6,10 +6,12 @@ var cocos  = require('cocos2d')   // Import the cocos2d module
   , events = require('events')    // Import the events module
   , geo    = require('geometry')  // Import the geometry module
   , ccp    = geo.ccp              // Short hand to create points
+  , Pig    = require('./pig')
 
 // Convenient access to some constructors
 var Layer    = nodes.Layer
   , Scene    = nodes.Scene
+  , Sprite   = nodes.Sprite
   , Label    = nodes.Label
   , Director = cocos.Director
 
@@ -17,28 +19,31 @@ var Layer    = nodes.Layer
  * @class Initial application layer
  * @extends cocos.nodes.Layer
  */
-function Pigs () {
+function HappyLayer () {
     // You must always call the super class constructor
-    Pigs.superclass.constructor.call(this)
+    HappyLayer.superclass.constructor.call(this)
 
     // Get size of canvas
     var s = Director.sharedDirector.winSize
 
-    // Create label
-    var label = new Label({ string:   'Pigs'
+    // Add a label
+    var label = new Label({ string:   'HappyLayer'
                           , fontName: 'Arial'
-                          , fontSize: 76
+                          , fontSize: 26
                           })
-
-    // Position the label in the centre of the view
     label.position = ccp(s.width / 2, s.height / 2)
-
-    // Add label to layer
     this.addChild(label)
+
+    // Add Pig
+    var pig = new Pig()
+    pig.position = new geom.Point(160, s.height - 280)
+    this.addChild(pig)
+    this.pig = pig
 }
 
 // Inherit from cocos.nodes.Layer
-Pigs.inherit(Layer)
+HappyLayer.inherit(Layer)
+
 
 /**
  * Entry point for the application
@@ -53,7 +58,7 @@ function main () {
     events.addListener(director, 'ready', function (director) {
         // Create a scene and layer
         var scene = new Scene()
-          , layer = new Pigs()
+          , layer = new HappyLayer()
 
         // Add our layer to the scene
         scene.addChild(layer)
