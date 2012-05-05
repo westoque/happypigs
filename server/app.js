@@ -36,6 +36,10 @@ app.get('/something', function(req, res) {
   res.render('something', { title: 'Express' });
 });
 
+app.get('/sponsors', function(req, res) {
+  res.render('sponsors', { title: 'Express' });
+});
+
 io.sockets.on('connection', function (socket) {
   socket.emit('ready', { success: true });
 
@@ -47,8 +51,6 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('controllerEvent', function(data) {
-    console.log('++++++++++++++++++++');
-    console.log(data);
     if (data && data.game) {
       var key = 'game:' + data.game;
       socket.broadcast.emit(key, data);
