@@ -13,7 +13,7 @@ var io = require('socket.io').listen(app);
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
+  app.set('view engine', 'ejs');
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
@@ -32,20 +32,29 @@ app.configure('production', function(){
 
 app.get('/', routes.index);
 
+app.get('/something', function(req, res) {
+  res.render('something', { title: 'Express' })
+});
+
 io.sockets.on('connection', function (socket) {
   socket.emit('ready', { success: true });
+
   socket.on('register', function (data) {
     if (data && data.game) {
       var key = 'game:' + data.game;
       socket.join(key);
     }
   });
+
   socket.on('controllerEvent', function(data) {
+    console.log(data);
     if (data && data.game) {
       var key = 'game:' + data.game;
-      io.sockets.in(key).send(data.coordinates);
+      socket.broadcast.emit('data', 'data', {});
+      //io.sockets.emit(key).send(data.coordinates);
     }
   });
+
   socket.on('unregister', function (data) {
     if (data && data.game) {
       var key = 'game:' + data.game;

@@ -1,0 +1,16 @@
+<h1> Bomz </h1>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" charset="utf-8">
+  var socket = io.connect('http://localhost:3000');
+
+  var x = 10;
+  setInterval(function() {
+    socket.emit('controllerEvent', {
+      coordinates: {
+        x: x,
+        y: 100
+      },
+      game: 'test'
+    });
+  }, 500);
+</script>

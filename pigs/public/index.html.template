@@ -30,7 +30,8 @@
     <body>
       <script type="text/javascript" charset="utf-8">
         var socket = io.connect('http://localhost:3000');
-        socket.on('controllerEvent', function (coordinates) {
+        socket.on('data', function (coordinates) {
+          console.log('connnnnn');
           console.log(coordinates);
         });
       </script>

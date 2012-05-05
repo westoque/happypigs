@@ -1,0 +1,36 @@
+<h1>HappyPigs! Oink!</h1>
+<canvas id="canvas" width="300" height="300"></canvas>
+<script>
+</script>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+
+  // Circle Stuff
+  var x = 10;
+  var y = 150;
+  var dx = 2;
+  var dy = 4;
+  var ctx;
+
+  function init() {
+    ctx = $('#canvas')[0].getContext("2d");
+    return setInterval(draw, 10);
+  }
+
+  function draw() {
+    ctx.clearRect(0,0,300,300);
+    ctx.beginPath();
+    ctx.arc(x, y, 10, 0, Math.PI*2, true);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  init();
+
+  // Websocket Stuff
+  var socket = io.connect('http://localhost');
+  socket.on('event', function (data) {
+    x = data.x;
+  });
+</script>
