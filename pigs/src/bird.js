@@ -27,8 +27,9 @@ function Bird(canvasSize, layer) {
 
 Bird.inherit(cocos.nodes.Node, {
   shoot: function(point) {
-    if (Math.abs(point.x - this.position.x) < 30 &&
-        Math.abs(point.y - this.position.y) < 30) {
+    console.log('z', Math.abs(point.x - this.position.x));
+    if (Math.abs(point.x - this.position.x) < 80 &&
+        Math.abs(point.y - this.position.y) < 80) {
       this.layer.removeChild(this);
     }
   },

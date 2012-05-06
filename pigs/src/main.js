@@ -32,6 +32,13 @@ function HappyLayer () {
   var s = Director.sharedDirector.winSize;
   var self = this;
 
+  var sprite = new cocos.nodes.Sprite({
+                 file: '/resources/background.png',
+                 rect: new geo.Rect(0, 0, 1000, 658)
+               });
+  sprite.anchorPoint = new geo.Point(0, 0);
+  this.addChild({child: sprite});
+
   // Add Bird
   var birdCount = 3;
   this.birds = []
@@ -51,6 +58,9 @@ function HappyLayer () {
   var origin;
   var cherryPopped = false;
 
+  window.top.fakeHit = function() {
+    window.top.something({coordinates: {f: true}});
+  };
   window.top.something = function(data) {
     if (!cherryPopped) {
       origin = data.coordinates;
@@ -60,17 +70,19 @@ function HappyLayer () {
     var coor = data.coordinates;
     var pos  = self.pig.position;
 
-    var newX = (coor.x - origin.x) * -2;
-    var newY = (coor.y - origin.y) * 2;
+    if (coor.x && coor.y) {
+      var newX = (coor.x - origin.x) * -2;
+      var newY = (coor.y - origin.y) * 2;
+      pos.x += newX;
+      pos.y += newY;
+    }
 
-    pos.x += newX;
-    pos.y += newY;
-
-    if (data.coordinates.f) {
-      console.log(pos);
+    if (coor.f) {
+      console.log(pos.x, pos.y);
       for(var i=0; i<birdCount; i++) {
-        console.log(self.birds[i].position);
         self.birds[i].shoot(pos);
+        var bpos = self.birds[i].position;
+        console.log(bpos.x, bpos.y);
       }
     }
 
