@@ -45,7 +45,6 @@ function HappyLayer () {
     var bird = new Bird(s, this);
     bird.position = new geo.Point(320, 320);
     this.addChild(bird);
-    this.bird = bird;
     this.birds.push(bird);
   }
 

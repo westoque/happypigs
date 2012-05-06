@@ -3,8 +3,8 @@ var cocos = require('cocos2d'),
     util  = require('util');
 
 function speed() {
-  var num = parseInt(Math.random() * 20);
-  return 1;
+  var num = parseInt(Math.random() * 30) + 10;
+  return num;
 }
 function Bird(canvasSize, layer) {
   Bird.superclass.constructor.call(this);
@@ -13,7 +13,7 @@ function Bird(canvasSize, layer) {
                  file: '/resources/pig.png',
                  rect: new geom.Rect(0, 0, 111, 121)
                });
-  sprite.anchorPoint = new geom.Point(100, 100);
+  sprite.anchorPoint = new geom.Point(0, 0);
   this.addChild({child: sprite});
   this.contentSize = sprite.contentSize;
 
@@ -21,8 +21,9 @@ function Bird(canvasSize, layer) {
   this.dy = speed();
   this.layer = layer;
   this.canvasSize = canvasSize;
-  // this.scheduleUpdate()
+  this.scheduleUpdate()
 }
+
 
 Bird.inherit(cocos.nodes.Node, {
   shoot: function(point) {
