@@ -10,8 +10,8 @@ function Bird(canvasSize, layer) {
   Bird.superclass.constructor.call(this);
 
   var sprite = new cocos.nodes.Sprite({
-                 file: '/resources/pig.png',
-                 rect: new geom.Rect(0, 0, 111, 121)
+                 file: '/resources/bird.png',
+                 rect: new geom.Rect(0, 0, 140, 140)
                });
   sprite.anchorPoint = new geom.Point(0, 0);
   this.addChild({child: sprite});
@@ -34,7 +34,6 @@ Bird.inherit(cocos.nodes.Node, {
   },
 
   update: function (dt) {
-    console.log('updating...');
     var pos = util.copy(this.position);
 
     pos.x += dt * this.dx;
