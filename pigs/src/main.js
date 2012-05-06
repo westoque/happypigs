@@ -23,7 +23,7 @@ function HappyLayer () {
   // You must always call the super class constructor
   HappyLayer.superclass.constructor.call(this);
 
-  var winSize = cocos.Director.sharedDirector.winSize
+  var winSize = cocos.Director.sharedDirector.winSize;
   var maxHeight = winSize.height;
   var maxWidth  = winSize.width;
 
@@ -33,9 +33,10 @@ function HappyLayer () {
   // Add Pig
   var self = this;
   var pig = new Pig();
-  pig.position = new geo.Point(160, s.height - 280);
+  pig.position = new geo.Point(320, 320);
   this.addChild(pig);
   this.pig = pig;
+  console.log(pig.contentSize);
 
   // Add Pig 1
   //var self = this;
@@ -54,7 +55,6 @@ function HappyLayer () {
   var origin;
   var cherryPopped = false;
 
-
   window.top.pig = pig;
   window.top.something = function(data) {
     if (!cherryPopped) {
@@ -63,17 +63,24 @@ function HappyLayer () {
     }
 
     var coor = data.coordinates;
-    var pos = self.pig.position;
+    var pos  = self.pig.position;
 
-    var newX = (coor.x - origin.x) * 2;
+    var newX = (coor.x - origin.x) * -2;
     var newY = (coor.y - origin.y) * 2;
 
-    if (maxWidth > newX < 0) {
+    console.log(newY);
+
+    //if (((newX + pig.contentSize.width) > maxWidth) || newX < 0) {
+      //pos.x = 640;
+    //} else {
       pos.x += newX;
-    }
-    if (maxHeight > newY < 0) {
+    //}
+
+    //if (((newY + pig.contentSize.height) > maxHeight) || newY < 0) {
+      //pos.y = 480;
+    //} else {
       pos.y += newY;
-    }
+    //}
   };
 }
 
