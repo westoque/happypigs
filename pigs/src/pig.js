@@ -6,7 +6,7 @@ function Pig() {
 
     var sprite = new cocos.nodes.Sprite({
                    file: '/resources/crosshairs.png',
-                   rect: new geom.Rect(0, 0, 200, 200)
+                   rect: new geom.Rect(0, 0, 160, 160)
                  });
     sprite.anchorPoint = new geom.Point(0, 0);
     this.addChild({child: sprite});
