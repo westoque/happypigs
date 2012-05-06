@@ -7,6 +7,7 @@ var cocos  = require('cocos2d')   // Import the cocos2d module
   , geo    = require('geometry')  // Import the geometry module
   , ccp    = geo.ccp              // Short hand to create points
   , Pig    = require('./pig')
+  , Bird    = require('./bird')
 
 // Convenient access to some constructors
 var Layer    = nodes.Layer
@@ -29,33 +30,28 @@ function HappyLayer () {
 
   // Get size of canvas
   var s = Director.sharedDirector.winSize;
+  var self = this;
 
   // Add Pig
-  var self = this;
   var pig = new Pig();
   pig.position = new geo.Point(320, 320);
   this.addChild(pig);
   this.pig = pig;
-  console.log(pig.contentSize);
 
-  // Add Pig 1
-  //var self = this;
-  //var pig = new Pig();
-  //pig.position = new geo.Point(10, 280);
-  //this.addChild(pig);
-  //this.pig = pig;
-
-  // Add Pig 2
-  //var self = this;
-  //var pig = new Pig();
-  //pig.position = new geo.Point(50, 280);
-  //this.addChild(pig);
-  //this.pig = pig;
+  // Add Bird
+  var birdCount = 5;
+  this.birds = []
+  for(var i=0; i<birdCount; i++) {
+    var bird = new Bird(s, this);
+    bird.position = new geo.Point(320, 320);
+    this.addChild(bird);
+    this.bird = bird;
+    this.birds.push(bird);
+  }
 
   var origin;
   var cherryPopped = false;
 
-  window.top.pig = pig;
   window.top.something = function(data) {
     if (!cherryPopped) {
       origin = data.coordinates;
@@ -69,18 +65,27 @@ function HappyLayer () {
     var newY = (coor.y - origin.y) * 2;
 
     console.log(newY);
+    pos.x += newX;
+    pos.y += newY;
 
-    //if (((newX + pig.contentSize.width) > maxWidth) || newX < 0) {
-      //pos.x = 640;
-    //} else {
-      pos.x += newX;
-    //}
+    if (data.coordinates.shoot) {
+      for(var i=0; i<birdCount; i++) {
+        self.birds[i].shoot(pos);
+      }
+    }
 
-    //if (((newY + pig.contentSize.height) > maxHeight) || newY < 0) {
-      //pos.y = 480;
-    //} else {
-      pos.y += newY;
-    //}
+    if (pos.y < 0) {
+      pos.y = 0
+    }
+    if (pos.y > s.height) {
+      pos.y = s.height;
+    }
+    if (pos.x < 0) {
+      pos.x = 0;
+    }
+    if (pos.x > s.width) {
+      pos.x = s.width;
+    }
   };
 }
 
