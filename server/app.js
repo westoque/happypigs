@@ -43,8 +43,12 @@ app.get('/sponsors', function(req, res) {
 });
 
 app.get('/sendsms', function(req, res) {
-  exec('curl -d "client_id=9e813527dcd0547354c426e18f5a90&client_secret=554d777ad94ce104&grant_type=client_credentials&scope=SMS" https://api.att.com/oauth/token', function(err, stdout, stderr) {
-    console.log(stdout);
+  exec('curl -d "client_id=9e813527dcd0547354c59426e18f5a90&client_secret=554d777ad94ce104&grant_type=client_credentials&scope=SMS" https://api.att.com/oauth/token', function(err, stdout, stderr) {
+    var opts = JSON.parse(stdout);
+    var cmd = 'curl -d "cAddress=tel%3A7024814664&Message=Newhighscore" https://apitt.com/rest/sms/2/messaging/outbox?access_token=' + opts.access_token;
+    exec(cmd, function(err, stdout, stderr) {
+      console.log(stdout);
+    });
   });
 });
 
