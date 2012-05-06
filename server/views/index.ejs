@@ -1,36 +1,99 @@
-<h1>HappyPigs! Oink!</h1>
-<canvas id="canvas" width="300" height="300"></canvas>
-<script>
-</script>
-
-<script src="/socket.io/socket.io.js"></script>
-<script>
-
-  // Circle Stuff
-  var x = 10;
-  var y = 150;
-  var dx = 2;
-  var dy = 4;
-  var ctx;
-
-  function init() {
-    ctx = $('#canvas')[0].getContext("2d");
-    return setInterval(draw, 10);
+<style>
+  body {
+    text-align: center;
   }
 
-  function draw() {
-    ctx.clearRect(0,0,300,300);
-    ctx.beginPath();
-    ctx.arc(x, y, 10, 0, Math.PI*2, true);
-    ctx.closePath();
-    ctx.fill();
+  #number {
+    font-size: 33px;
   }
 
-  init();
+  #nsub {
+    font-size: 33px;
+  }
 
-  // Websocket Stuff
-  var socket = io.connect('http://localhost');
-  socket.on('event', function (data) {
-    x = data.x;
-  });
+  .separators {
+    margin-top: 10px;
+  }
+</style>
+
+<h1>Welcome to Happy Pigs</h1>
+<div id="fb-root"></div>
+<div class="separators">
+  <input id="number" type="text" placeholder="Phone number please" />
+</div>
+<div class="separators">
+  <input id="nsub" type="submit" value="Start Killing Birds" placeholder="Phone number please" />
+</div>
+<div class="separators fb-button">
+  <div class="fb-login-button"></div>
+</div>
+<div class="separators">
+  <a id="play-game" href="#">Play Game</div>
+</div>
+
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '162131767143149', // App ID
+      status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+    });
+
+    // Additional initialization code here
+  };
+
+  // Load the SDK Asynchronously
+  (function(d){
+     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     ref.parentNode.insertBefore(js, ref);
+   }(document));
+
+   $(document).ready(function() {
+     $('#nsub').click(function(e) {
+       var n = $('#number').val();
+       localStorage.setItem('pnumber', n);
+       alert('Thanks for submitting your phone number!');
+
+       $('#nsub').attr('disabled', 'disabled');
+       $('#number').attr('disabled', 'disabled');
+
+       e.preventDefault();
+     });
+
+     $('#play-game').click(function(e) {
+       alert('boomz');
+       e.preventDefault();
+       //FB.login(function(response) {
+         //if (response.authResponse) {
+          window.location = 'http://localhost:4000';
+          //FB.ui({
+             //method: 'feed',
+             //message: 'getting educated about Facebook Connect',
+             //name: 'Connect',
+             //caption: 'The Facebook Connect JavaScript SDK',
+                //description: (
+                //'A small JavaScript library that allows you to harness ' +
+                //'the power of Facebook, bringing the user\'s identity, ' +
+                //'social graph and distribution power to your site.'
+             //),
+             //link: 'http://www.fbrell.com/',
+             //picture: 'http://www.fbrell.com/f8.jpg',
+             //actions: [
+                  //{ name: 'fbrell', link: 'http://www.fbrell.com/' }
+             //],
+            //user_message_prompt: 'Share your thoughts about RELL'
+            //},
+            //function(response) {
+              //if (response && response.post_id) {
+              //} else {
+              //}
+          //});
+         //}
+       //}, {scope: 'email,user_likes'});
+     });
+   });
 </script>

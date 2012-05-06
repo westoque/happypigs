@@ -3,11 +3,13 @@
  * Module dependencies.
  */
 
-var express = require('express')
-  , routes = require('./routes')
+var express = require('express');
+var routes = require('./routes');
+var request = require('request');
 
 var app = module.exports = express.createServer();
 var io = require('socket.io').listen(app);
+var exec = require('child_process').exec;
 
 // Configuration
 
@@ -38,6 +40,12 @@ app.get('/something', function(req, res) {
 
 app.get('/sponsors', function(req, res) {
   res.render('sponsors', { title: 'Express' });
+});
+
+app.get('/sendsms', function(req, res) {
+  exec('curl -d "client_id=9e813527dcd0547354c426e18f5a90&client_secret=554d777ad94ce104&grant_type=client_credentials&scope=SMS" https://api.att.com/oauth/token', function(err, stdout, stderr) {
+    console.log(stdout);
+  });
 });
 
 io.sockets.on('connection', function (socket) {

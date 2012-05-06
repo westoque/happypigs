@@ -38,12 +38,18 @@ function HappyLayer () {
   this.addChild(pig);
   this.pig = pig;
 
+  var bird = new Bird();
+  bird.position = new geo.Point(10, 10);
+  this.addChild(bird);
+  this.bird = bird;
+  //this.birds.push(bird);
+
   // Add Bird
   var birdCount = 5;
   this.birds = []
   for(var i=0; i<birdCount; i++) {
     var bird = new Bird(s, this);
-    bird.position = new geo.Point(320, 320);
+    bird.position = new geo.Point(10, 10);
     this.addChild(bird);
     this.birds.push(bird);
   }
